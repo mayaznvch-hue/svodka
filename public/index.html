@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Сводка</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2311140f'/><path d='M8 22V10l8 8 8-8v12' stroke='%23c6f05a' stroke-width='3' fill='none'/></svg>">
+<style>
+:root{
+  --bg:#0f120e; --panel:#161a14; --line:#262c22; --ink:#ecefe6; --mute:#a6ae9e; --dim:#868e7f;
+  --acc:#c6f05a; --acc-ink:#11140f; --warn:#ffb454; --biz:#7cc7ff;
+  --f:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --fh:"Segoe UI Variable Display","Bahnschrift","Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f)}
+a{color:inherit}
+header{position:sticky;top:0;z-index:5;background:rgba(15,18,14,.94);border-bottom:1px solid var(--line);backdrop-filter:saturate(1.2)}
+.bar{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:22px;padding:12px 24px}
+.logo{font:700 20px var(--fh);letter-spacing:.02em;display:flex;align-items:center;gap:9px;white-space:nowrap}
+.logo i{width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px rgba(198,240,90,.15)}
+nav{display:flex;gap:4px}
+nav button{all:unset;cursor:pointer;padding:9px 14px;border-radius:8px;color:var(--mute);font-weight:600;white-space:nowrap}
+nav button:hover{color:var(--ink);background:#1c2119}
+nav button[aria-selected=true]{color:var(--acc-ink);background:var(--acc)}
+.status{margin-left:auto;display:flex;align-items:center;gap:12px;color:var(--mute);font-size:13px;white-space:nowrap}
+.btn{all:unset;cursor:pointer;border:1px solid var(--line);padding:7px 12px;border-radius:8px;color:var(--ink);font-size:13px;font-weight:600}
+.btn:hover{border-color:var(--acc);color:var(--acc)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid var(--acc);border-right-color:transparent;border-radius:50%;animation:r .8s linear infinite;vertical-align:-1px;margin-right:6px}
+@keyframes r{to{transform:rotate(1turn)}}
+main{max-width:1180px;margin:0 auto;padding:26px 24px 80px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px;flex-wrap:wrap}
+h1{font:700 30px/1.15 var(--fh);margin:0}
+.sub{color:var(--mute);margin-top:4px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{all:unset;cursor:pointer;font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.chip:hover{color:var(--ink)}
+.chip.on{border-color:var(--acc);color:var(--acc)}
+.pulse{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:14px 18px;margin-bottom:20px}
+.pulse b{color:var(--acc);font-size:12px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
+/* новости: лид + список */
+.lead{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;margin-bottom:8px}
+.lead .top{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.lead .top img{width:100%;flex:1 1 auto;min-height:220px;height:0;object-fit:cover;display:block;background:#1c2119}
+.lead .top .in{padding:18px 20px 20px}
+.lead .top h2{font:700 24px/1.2 var(--fh);margin:6px 0 8px}
+.lead .side{display:flex;flex-direction:column;gap:0}
+.item{display:grid;grid-template-columns:1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0;padding-top:4px}
+.lead .side .item{grid-template-columns:1fr;padding:14px 0}
+.lead .side .item:first-child{padding-top:0}
+.time{color:var(--dim);font-size:13px;font-variant-numeric:tabular-nums;padding-top:3px}
+.meta{display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--mute);flex-wrap:wrap}
+.tag{color:var(--acc);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11.5px}
+.imp{color:var(--warn);letter-spacing:1px}
+h3{font:650 17.5px/1.3 var(--fh);margin:4px 0 5px}
+h3 a,h2 a{text-decoration:none}
+h3 a:hover,h2 a:hover{color:var(--acc)}
+.sum{color:#c5cbbd;margin:0}
+.why{margin:7px 0 0;font-size:14px;color:var(--ink)}
+.why:before{content:"→ ";color:var(--acc);font-weight:700}
+.list{display:grid;grid-template-columns:1fr 1fr;column-gap:40px}
+.list .item{padding-top:16px!important;border-top:1px solid var(--line)!important}
+.lead .top:not(:has(img)){align-self:start}
+
+.lead .side .item:first-child{border-top:0}
+
+/* идеи */
+.ideas{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.col h2{font:700 18px var(--fh);margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.col h2 .dot{width:9px;height:9px;border-radius:2px;background:var(--acc)}
+.col.biz h2 .dot{background:var(--biz)}
+.col .sub{margin:0 0 14px}
+.idea{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.idea h3{margin:0 0 6px}
+.idea p{margin:0 0 10px;color:#c5cbbd}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13.5px;margin:0 0 12px}
+.facts dt{color:var(--dim)}
+.facts dd{margin:0}
+.hook{font-style:italic;color:var(--biz);font-size:14px;margin:0 0 12px}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.star.on{border-color:var(--warn);color:var(--warn)}
+details.prompt{margin-top:10px}
+details.prompt summary{cursor:pointer;color:var(--mute);font-size:13px}
+details.prompt pre{white-space:pre-wrap;background:#0c0f0b;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:13px/1.45 Consolas,monospace;color:#d6dccd;margin:8px 0 0}
+.older{margin-top:30px;border-top:1px solid var(--line);padding-top:18px}
+.older summary{cursor:pointer;color:var(--mute);font-weight:600}
+.empty{color:var(--mute);padding:60px 0;text-align:left}
+.note{color:var(--warn);font-size:13px;margin:-8px 0 16px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--acc);color:var(--acc-ink);padding:9px 16px;border-radius:8px;font-weight:700;opacity:0;transition:.2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (max-width:860px){
+  .lead,.ideas{grid-template-columns:1fr}.list{grid-template-columns:1fr}
+  .bar{flex-wrap:wrap;gap:10px;padding:10px 14px}.status{margin-left:0;width:100%;justify-content:space-between;white-space:normal;font-size:12.5px}.status .btn{flex:none}nav button{padding:9px 11px}.status .btn,.chip{padding:10px 14px}
+  nav{overflow:auto;width:100%}main{padding:18px 14px 60px}h1{font-size:24px}
+  .item{grid-template-columns:1fr;gap:2px}
+}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="logo"><i></i>Сводка</div>
+  <nav role="tablist">
+    <button role="tab" data-tab="world" aria-selected="true">Главное</button>
+    <button role="tab" data-tab="ai" aria-selected="false">ИИ и IT</button>
+    <button role="tab" data-tab="ideas" aria-selected="false">Идеи для вайбкодинга</button>
+  </nav>
+  <div class="status"><span id="upd">—</span><button class="btn" id="refresh">Обновить сейчас</button></div>
+</div></header>
+<main id="main"><div class="empty">Загрузка…</div></main>
+<div class="toast" id="toast"></div>
+<script>
+const $ = s => document.querySelector(s);
+let state = null, tab = new URLSearchParams(location.search).get('t') || localStorage.tab || 'world', filter = {world:'', ai:''}, ideaFilter = 'all';
+const stars = JSON.parse(localStorage.stars || '{}');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hm = t => new Date(t).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+const ago = t => { const m = Math.round((Date.now()-t)/60000); if (m<1) return 'только что'; if (m<60) return m+' мин назад'; const h=Math.floor(m/60); if (h<24) return h+' ч назад'; return new Date(t).toLocaleDateString('ru-RU',{day:'numeric',month:'short'}); };
+const dots = n => n ? '●'.repeat(Math.min(5,n)) : '';
+function toast(t){ const e=$('#toast'); e.textContent=t; e.classList.add('on'); setTimeout(()=>e.classList.remove('on'),1600); }
+
+async function load(){
+  try { const r = await fetch('/api/state'); if (!r.ok) throw 0; state = await r.json(); }
+  catch {
+    try {
+      const g = n => fetch('data/'+n+'.json?t='+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null);
+      const [world, ai, ideas] = await Promise.all([g('world'), g('ai'), g('ideas')]);
+      state = {world, ai, ideas, updating:false, static:true};
+      $('#refresh').style.display='none';
+    } catch { $('#upd').textContent = 'нет данных'; return; }
+  }
+  const at = state.world?.at;
+  $('#upd').innerHTML = state.updating ? '<span class="spin"></span>обновляю…' : (at ? 'обновлено ' + ago(at) + ' · авто раз в час' : 'нет данных');
+  $('#refresh').disabled = state.updating;
+  render();
+}
+function itemHTML(i, big){
+  const meta = `<div class="meta"><span class="tag">${esc(i.tag)}</span><span>${esc(i.source)}</span><span>${hm(i.date)}</span><span class="imp" title="важность 1–5">${dots(i.importance)}</span></div>`;
+  const body = `${meta}<${big?'h2':'h3'}><a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title_ru||i.title)}</a></${big?'h2':'h3'}>${i.summary?`<p class="sum">${esc(i.summary)}</p>`:''}${i.why?`<p class="why">${esc(i.why)}</p>`:''}`;
+  if (big) return `<article class="top">${i.img?`<img src="${esc(i.img)}" alt="" loading="lazy" onerror="this.remove()">`:''}<div class="in">${body}</div></article>`;
+  return `<article class="item"><div>${body}</div></article>`;
+}
+function renderNews(key, title, sub){
+  const d = state[key];
+  if (!d || !d.items?.length) return `<div class="head"><div><h1>${title}</h1><div class="sub">${sub}</div></div></div><div class="empty">${state.updating?'<span class="spin"></span>Собираю и отбираю новости — первый раз это занимает 1–3 минуты…':'Пока пусто. Нажми «Обновить сейчас».'}</div>`;
+  const tags = [...new Set(d.items.map(i=>i.tag))];
+  const items = d.items.filter(i => !filter[key] || i.tag === filter[key]);
+  const chips = `<div class="chips"><button class="chip ${!filter[key]?'on':''}" data-f="">Все</button>${tags.map(t=>`<button class="chip ${filter[key]===t?'on':''}" data-f="${esc(t)}">${esc(t)}</button>`).join('')}</div>`;
+  let html = `<div class="head"><div><h1>${title}</h1><div class="sub">${sub} · отобрано ${d.items.length} из ${d.pool} свежих</div></div>${chips}</div>`;
+  if (!d.ai) html += `<p class="note">ИИ-отбор не сработал (${esc(d.error||'')}), показан грубый фильтр.</p>`;
+  if (d.pulse && !filter[key]) html += `<div class="pulse"><b>Пульс рынка</b>${esc(d.pulse)}</div>`;
+  if (!filter[key] && items.length > 4 && items[0].img) {
+    const withImg = items.findIndex(i=>i.img); const first = items[0];
+    html += `<section class="lead">${itemHTML(first,true)}<div class="side">${items.slice(1,4).map(i=>itemHTML(i)).join('')}</div></section>`;
+    html += `<section class="list">${items.slice(4).map(i=>itemHTML(i)).join('')}</section>`;
+  } else html += `<section class="list">${items.map(i=>itemHTML(i)).join('')}</section>`;
+  return html;
+}
+function ideaHTML(x){
+  const biz = x.type === 'biz';
+  return `<article class="idea">
+    <h3>${esc(x.title)}</h3><p>${esc(x.pitch)}</p>
+    <dl class="facts"><dt>Для кого</dt><dd>${esc(x.who)}</dd><dt>Стек</dt><dd>${esc(x.stack)}</dd><dt>Время</dt><dd>${esc(x.hours)}</dd>${biz&&x.money?`<dt>Деньги</dt><dd>${esc(x.money)}</dd>`:''}</dl>
+    ${biz&&x.hook?`<p class="hook">«${esc(x.hook)}»</p>`:''}
+    <div class="acts"><button class="btn" data-copy="${esc(x.id)}">Скопировать промпт</button><button class="btn star ${stars[x.id]?'on':''}" data-star="${esc(x.id)}">${stars[x.id]?'★ В избранном':'☆ В избранное'}</button></div>
+    <details class="prompt"><summary>Промпт для ИИ-кодера</summary><pre>${esc(x.prompt)}</pre></details>
+  </article>`;
+}
+function allIdeas(){ return (state.ideas?.batches||[]).flatMap(b=>b.ideas.map(i=>({...i,at:b.at}))); }
+function renderIdeas(){
+  const b = state.ideas?.batches || [];
+  if (!b.length) return `<div class="head"><div><h1>Идеи для вайбкодинга</h1></div></div><div class="empty">${state.updating?'<span class="spin"></span>Генерирую идеи…':'Пока пусто. Нажми «Обновить сейчас».'}</div>`;
+  const favs = allIdeas().filter(i=>stars[i.id]);
+  const chips = `<div class="chips"><button class="chip ${ideaFilter==='all'?'on':''}" data-i="all">Свежая пачка</button><button class="chip ${ideaFilter==='fav'?'on':''}" data-i="fav">Избранное (${favs.length})</button></div>`;
+  let html = `<div class="head"><div><h1>Идеи для вайбкодинга</h1><div class="sub">Новая пачка каждый час, с оглядкой на свежие ИИ-новости · сгенерировано ${ago(b[0].at)}</div></div>${chips}</div>`;
+  if (state.ideas.error) html += `<p class="note">Последняя генерация не удалась (${esc(state.ideas.error)}), показана предыдущая.</p>`;
+  const cols = list => `<section class="ideas"><div class="col"><h2><span class="dot"></span>Для себя и по приколу</h2><p class="sub">Собрать за вечер, кайфануть, показать друзьям</p>${list.filter(i=>i.type!=='biz').map(ideaHTML).join('')||'<p class="sub">—</p>'}</div><div class="col biz"><h2><span class="dot"></span>Для бизнеса и клиентов</h2><p class="sub">Что можно продать, кому и за сколько</p>${list.filter(i=>i.type==='biz').map(ideaHTML).join('')||'<p class="sub">—</p>'}</div></section>`;
+  if (ideaFilter==='fav') return html + (favs.length?cols(favs):'<div class="empty">Отмечай идеи звёздочкой — они сохранятся здесь навсегда.</div>');
+  html += cols(b[0].ideas);
+  if (b.length>1) html += `<details class="older"><summary>Прошлые пачки (${b.length-1})</summary>${b.slice(1).map(x=>`<h3 style="margin:22px 0 10px;color:var(--mute)">${new Date(x.at).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</h3>${cols(x.ideas)}`).join('')}</details>`;
+  return html;
+}
+function render(){
+  document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected', b.dataset.tab===tab));
+  const m = $('#main');
+  m.innerHTML = tab==='world' ? renderNews('world','Главное за сутки','Россия и мир без политики: деньги, законы, авто, технологии, наука, жизнь')
+    : tab==='ai' ? renderNews('ai','ИИ и IT','Модели, тесты, инструменты, деньги и всё, что двигает рынок')
+    : renderIdeas();
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.tab){ tab = localStorage.tab = t.dataset.tab; render(); scrollTo(0,0); }
+  else if (t.dataset.f !== undefined){ filter[tab] = t.dataset.f; render(); }
+  else if (t.dataset.i){ ideaFilter = t.dataset.i; render(); }
+  else if (t.dataset.copy){ const x = allIdeas().find(i=>i.id===t.dataset.copy); navigator.clipboard.writeText(`${x.title}\n\n${x.prompt}`).then(()=>toast('Промпт скопирован')); }
+  else if (t.dataset.star){ const id=t.dataset.star; if (stars[id]) delete stars[id]; else stars[id]=1; localStorage.stars=JSON.stringify(stars); render(); }
+  else if (t.id==='refresh'){ fetch('/api/refresh',{method:'POST'}).then(()=>{toast('Обновление запущено, 1–3 мин'); setTimeout(load,800);}); }
+});
+load(); setInterval(load, 30000);
+</script>
+</body>
+</html>
